@@ -1,0 +1,243 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <title>百度2020语言与智能技术竞赛:事件抽取任务</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" type="text/css" href="pages.css">
+
+  <script type="text/javascript" src="js/jquery-3.4.1-1.js"></script>
+</head>
+
+
+
+<body>
+  <header class="navbar navbar-inverse navbar-fixed-top bs-docs-nav" role="banner">
+    <div class="container">
+      <div class="navbar-header">
+        <button class="navbar-toggle" type="button" data-toggle="collapse" data-target=".bs-navbar-collapse">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="home.html">eventExtraction</a>
+      </div>
+      <nav class="collapse navbar-collapse bs-navbar-collapse" role="navigation">
+        <ul class="nav navbar-nav">
+          <li><a href="home.html">首页</a></li>
+          <li><a href=" topic.html">主题关系分析</a></li>
+          <li class="active"><a href="result.html">结果展示</a></li>
+          <li><a href="data.html">数据集</a></li>
+          <li><a href=" copyright.html">使用说明</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <div class="container">
+
+    <div class="row text-center">
+
+      <input class="inputLeft inputLine" type="text" id="code" placeholder="请输入事件句id">
+      <input type="hidden" id="right_code" placeholder="请输入事件句id">
+      <button id="btn" class="i-code-btn" onclick="getCode(this)">
+        查询
+      </button>
+    </div>
+
+    <hr>
+
+    <div class="row text-center" ,
+      style="margin-bottom: 1rem; margin-left: 30rem; margin-right: 30rem; box-shadow: 0 0.32rem 0.72rem 0 rgba(0,0,0,.132), 0 0.06rem 0.18rem 0 rgba(0,0,0,.108)">
+      <h4 class="text-center">
+        事件句文本内容
+      </h4>
+      <textarea id="etext" class="line"></textarea>
+    </div>
+
+    <hr>
+
+    <div class="col-md-6" ,
+      style="margin-bottom: 1rem; margin-right: 1rem; box-shadow: 0 0.32rem 0.72rem 0 rgba(0,0,0,.132), 0 0.06rem 0.18rem 0 rgba(0,0,0,.108)">
+      <h4 class="text-center">
+        事件类型
+      </h4>
+      <textarea id="etype" class="st"></textarea>
+    </div>
+
+
+    <div class="col-md-6" ,
+      style="margin-bottom: 1rem; margin-right: 1rem; box-shadow: 0 0.32rem 0.72rem 0 rgba(0,0,0,.132), 0 0.06rem 0.18rem 0 rgba(0,0,0,.108)">
+      <h4 class="text-center">
+        事件触发词
+      </h4>
+      <textarea id="etrigger" class="st" ></textarea>
+    </div>
+
+    <hr>
+    <hr>
+
+    <div class="row text-center" ,
+    style="margin-bottom: 1rem; margin-left: 30rem; margin-right: 30rem; box-shadow: 0 0.32rem 0.72rem 0 rgba(0,0,0,.132), 0 0.06rem 0.18rem 0 rgba(0,0,0,.108)">
+    <h4 class="text-center">
+      论元角色对应的论元
+    </h4>
+    <table class="gridtable" id="role">
+      <tr> <th>论元角色</th> <th>论元</th> </tr> 
+      <tr> <td>裁员方 </td> <td> 雀巢</td> </tr>
+      <tr> <td> 裁员人数</td> <td>4000人 </td> </tr>
+    
+    </table>
+    </div>
+
+
+
+
+
+
+    <hr>
+
+    <div class="row text-center">
+      <p>
+        <a href="http://vis.pku.edu.cn/" target="_blank"><img src="images/logo.jpg" style="width: 100px"></a>
+      </p>
+      <p><small>Copyright 2021-2022. All Rights Reserved.</small></p>
+    </div>
+
+  </div>
+
+
+
+
+  <style>
+
+    .example-img {
+      /*border: 0.05rem solid #ed724c;*/
+      width: 100%;
+      height: 55rem;
+    }
+
+    ul.IsignUp li {
+      margin-top: 5px;
+    }
+
+    input.inputLine {
+      width: 226px;
+      padding: .375rem .75rem;
+      border-radius: .25rem;
+      border: 1px solid #ced4da;
+    }
+
+    input.inputLine:focus {
+      border-style: solid;
+      border-color: #03a9f4;
+      box-shadow: 0 0 5px #03a9f4;
+    }
+
+    input.inputLeft {
+      width: 130px;
+    }
+
+    button,
+    select {
+      padding: .375rem .75rem;
+      border-radius: .25rem;
+      border: 1px solid #ced4da;
+    }
+
+    button:hover,
+    select:hover {
+      border-color: #03a9f4;
+    }
+
+    button:active {
+      background: #03a9f4;
+    }
+
+    textarea.line {
+      border: 0;
+      background-color: rgba(241, 241, 241, .98);
+      width: 400px;
+      height: 50px;
+      padding: .375rem .75rem;
+      border-radius: .25rem;
+      resize: none;
+      text-align: center;
+    }
+
+    textarea.st {
+      border: 0;
+      background-color: rgba(241, 241, 241, .98);
+      width: 400px;
+      height: 50px;
+      padding: .375rem .75rem;
+      border-radius: .25rem;
+      resize: none;
+      margin-left: 12%;
+      margin-right: 10%;
+      text-align: center;
+    }
+
+    table.gridtable {    
+      font-family: verdana,arial,sans-serif;   
+      font-size:11px;    
+      color:#333333;    
+      border-width: 1px;   
+      border-color: #666666;   
+      border-collapse: collapse;
+      margin-left: 210px;
+      text-align: center;
+    }
+
+    table.gridtable th {   
+      border-width: 1px;   
+      padding: 8px;   
+      border-style: solid;   
+      border-color: #666666;  
+      background-color: #dedede;
+      text-align: center;
+    }
+
+    table.gridtable td {   
+      border-width: 1px;    
+      padding: 8px;   
+      border-style: solid;   
+      border-color: #666666;   
+      background-color: #ffffff;
+      text-align: center;
+    }
+  </style>
+
+  <script>
+    function getCode (obj) {
+      // 读取输入框id显示文本
+      var code = $.trim($('#code').val());
+      var a = document.getElementById("#role");
+      if (code == '1') {
+        $('#etext').val('雀巢裁员4000人：时代抛弃你时，连招呼都不会打！');
+        $('#etype').val('组织关系-裁员');
+        $('#etrigger').val('裁员');
+        a.rows(1).cells(1).innerHTML = '裁员方';
+       a.rows(1).cells(2).innerHTML = '雀巢';
+       a.rows(2).cells(1).innerHTML = '裁员人数';
+       a.rows(2).cells(2).innerHTML = '4000人';
+      }
+      if (code == '2') {
+        $('#etext').val('美国“未来为”子公司大幅度裁员，这是为什么呢？任正非正式回应');
+      }
+      if (code == '3') {
+        $('#etext').val('这一全球巨头“凉凉” “捅刀”华为后 裁员5000 现市值缩水800亿');
+      }
+      if (code == '4') {
+        $('#etext').val('被证实将再裁员1800人 AT&T在为落后的经营模式买单');
+      }
+
+    }
+  </script>
+</body>
+
+</html>

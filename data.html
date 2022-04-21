@@ -1,0 +1,179 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <title>百度2020语言与智能技术竞赛:事件抽取任务</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" type="text/css" href="pages.css">
+  <!-- <link rel="stylesheet" type="text/css" href="bootstrap.css" /> -->
+  <script>
+    var _hmt = _hmt || [];
+    (function () {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?ab5fde9ca174d44b81b9d73b58218d14";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+</head>
+
+<body>
+  <header class="navbar navbar-inverse navbar-fixed-top bs-docs-nav" role="banner">
+    <div class="container">
+      <div class="navbar-header">
+        <button class="navbar-toggle" type="button" data-toggle="collapse" data-target=".bs-navbar-collapse">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="home.html">eventExtraction</a>
+      </div>
+      <nav class="collapse navbar-collapse bs-navbar-collapse" role="navigation">
+        <ul class="nav navbar-nav">
+          <li><a href="home.html">首页</a></li>
+          <li><a href=" topic.html">主题关系分析</a></li>
+          <li><a href="result.html">结果展示</a></li>
+          <li class="active"><a href="data.html">数据集</a></li>
+          <li><a href=" copyright.html">使用说明</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+  <div style="float:right;opacity:0">
+    <h4><a href="https://vis.ucloud365.com/ncov/data_africa.html">百度2020语言与智能技术竞赛:事件抽取任务数据集</a></h4>
+    <h4><a href="https://vis.ucloud365.com/ncov/data_sars.html">严重急性呼吸道综合征SARS数据集</a></h4>
+  </div>
+
+  <div id="signUpModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"
+    style="z-index: 2999" class="modal fade">
+    <div class="modal-dialog" style="left:0">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" data-dismiss="modal" aria-label="Close" class="close">
+            <span aria-hidden="true">×</span>
+          </button>
+          <h3 class="modal-title">Application</h3>
+        </div>
+        <div class="modal-body">
+          <form class="form-horizontal">
+            <div style="margin-left: 25%;margin-right: 25%" class="form-group">
+              <label for="signUp_name">Name</label>
+              <input id="signUp_name" type="text" placeholder="Both Chinese and English are acceptable."
+                class="form-control" style="font-size: 12px;">
+            </div>
+            <div style="margin-left: 25%;margin-right: 25%" class="form-group">
+              <label for="signUp_institution">Institution</label>
+              <input id="signUp_institution" type="text" placeholder="Both Chinese and English are acceptable."
+                class="form-control" style="font-size: 12px;">
+            </div>
+            <div style="margin-left: 25%;margin-right: 25%" class="form-group">
+              <label for="email_address">Email</label>
+              <input id="email_address" type="email" placeholder="Please enter the correct email address."
+                class="form-control" style="font-size: 12px;">
+            </div>
+            <div style="margin-left: 25%;margin-right: 25%;" class="form-group">
+              <label for="purpose">Purpose</label>
+              <textarea id="purpose" class="form-control" placeholder="Both Chinese and English are acceptable."
+                style="font-size: 12px; word-break:break-all;height:74px;resize:none;" rows="3"></textarea>
+            </div>
+            <div class="checkbox" style=" width: 298px;margin-left: 22%;margin-top: -9px;margin-bottom: 17px;">
+              <label>
+                <input type="checkbox" id="check" value="check" class="filterCheckbox filter-selection">I have read the
+                statement and promise to use the data only for the limited purpose of application and not for commercial
+                use.
+              </label>
+            </div>
+
+            <div style="margin-left: 25%;margin-right: 25%" class="form-group">
+              <button id="signup" type="button" class="btn btn-default btn-block">
+                <b>Confirm</b>
+              </button>
+            </div>
+            <p id="signupInfo"></p>
+            <!--下面DIV是来显示sign up提示信息-->
+            <div style="margin-left: auto;margin-right: auto;max-width: 330px;display:none;text-align:center"
+              id="signupDiv" class="alert alert-danger"></div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="container">
+
+    <div>
+      <h3>百度2020语言与智能技术竞赛:事件抽取任务数据集</h3>
+      <button data-v-400d62e0="" class="download">
+        <a id="signUpBtn" href="https://www.kaggle.com/c/sentiment-analysis-of-covid-19-related-tweets/data"
+          target="_blank">
+          数据集下载
+        </a>
+      </button>
+
+
+      <p>
+        <br>
+        <b>数据来源：</b><br>
+        百度2020语言与智能技术竞赛<br>
+        <b>数据范围：</b> <br>
+        本数据集包含百度2020语言与智能技术竞赛的：train.json，test1.json以及相关格式说明文件<br>
+        <b>数据说明：</b> <br>
+        1、每行数据项包括：事件句文本，id，事件类型，事件触发词，论元角色，论元实体，事件类型标注；<br>
+        2、本数据集包含11958条训练数据，1489条测试数据<br>
+        3、本数据集为json格式，采用utf-8编码。<br>
+        <b>使用说明：</b> <br>
+        本数据集包含新闻，灾难，社会研究方面的相关事件句<br>
+        欢迎用于公益的转载或使用，我们提供无偿使用，请事先邮件联系说明使用情况并在使用中注明来源。其他方式的需要，请与我们具体联系，我们反对任何商业盗用行为。<br>
+        联系方式：inolack@163.com
+      </p>
+    </div>
+    <hr>
+    <div>
+      <h3>贡献者名录</h3>
+      <p>
+        <b>项目：</b><br>
+        华南师范大学：谭俊杰（作者），曹阳（指导老师），程乐，陈烁明（提供前端与算法帮助）<br>
+      </p>
+
+    </div>
+    <hr>
+
+    <div class="row text-center">
+      <p>
+        <a href="http://vis.pku.edu.cn/" target="_blank"><img src="images/logo.jpg" style="width: 100px"></a>
+      </p>
+      <p><small>Copyright 2021-2022. All Rights Reserved.</small></p>
+    </div>
+
+
+  </div>
+
+  <style>
+    .example-img {
+      /*border: 0.05rem solid #ed724c;*/
+      width: 100%;
+      height: 55rem;
+    }
+
+    textarea:-internal-autofill-selected {
+      background-color: rgb(232, 240, 254) !important;
+      background-image: none !important;
+      color: -internal-light-dark-color(black, white) !important;
+    }
+  </style>
+  <script src="./d3.v3.min.js" charset="utf-8"></script>
+  <script src="./jquery.min.js"></script>
+  <script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"
+    integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+    crossorigin="anonymous"></script>
+  <script src="./data_en.js"></script>
+</body>
+
+
+</html>

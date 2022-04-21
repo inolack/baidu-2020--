@@ -1,0 +1,373 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+  <title>百度2020语言与智能技术竞赛:事件抽取任务</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="keywords" content="百度 , 事件抽取, MRC, 事件论元,">
+
+
+  <script type="text/javascript" src="js/jquery-3.4.1-1.js"></script>
+  <script type="text/javascript" src="js/jquery.form.js"></script>
+  <link rel="stylesheet" type="text/css" href="pages.css" />
+  <link rel="stylesheet" type="text/css" href="css/fileinput.css" />
+  <link rel="stylesheet" href="bootstrap/css/bootstrap-theme.min.css">
+
+  <script type="text/javascript" src="js/fileinput.js"></script>
+  <script type="text/javascript" src="js/zh.js"></script>
+
+
+  <!-- <link rel="stylesheet" type="text/css" href="bootstrap.css" /> -->
+
+  <!-- <script>
+    function request() {
+      const req = new XMLHttpRequest();
+      req.open('POST', 'http://localhost:8080/predict/get', true);
+      req.responseType = 'blob';
+      req.setRequestHeader('Content-Type', 'application/json');
+      req.onload = function () {
+        const data = req.response;
+        const a = document.createElement('a');
+        const blob = new Blob([data]);
+        const blobUrl = window.URL.createObjectURL(blob);
+        download(blobUrl);
+      };
+      req.send('file');
+    };
+
+    function download(blobUrl) {
+      const a = document.createElement('a');
+      a.style.display = 'none';
+      a.download = 'predict_result.csv';
+      a.href = blobUrl;
+      a.click();
+      document.body.removeChild(a);
+    }
+  </script> -->
+
+  <script>
+
+    var lastFileName;
+    function upload () {
+
+      var fileName = $("#file").val();
+      var pos = fileName.lastIndexOf("\\");
+      fileName = fileName.substr(pos + 1, fileName.length);  // 截取出文件名 因为会带路径
+      lastFileName = fileName;
+      if ($.browser.msie) {             // 兼容ie
+        window.fileForm.submit();
+      } else {
+        $("#fileForm").submit();
+      }
+
+    }
+
+    function uploadOnload () {
+      if (lastFileName == undefined) return;          // 页面第一次出现的时候 也会执行这个方法
+      var body = $(window.frames['ajaxUpload'].document.body);   // iframe中的body
+      var retMsg = $("#returnMsg");
+      retMsg.text(body.context.textContent);    // 显示返回值
+
+      //encodeURIComponent解决中文乱码
+      let uri = 'data:text/csv;charset=utf-8,\ufeff' + encodeURIComponent(retMsg.text(body.context.textContent));
+      //通过创建a标签实现
+      var link = document.createElement("a");
+      link.href = uri;
+      //对下载的文件命名
+      link.download = "json数据表.csv";
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+  </script>
+
+  <script>
+    var lastFileName;
+
+    function upload () {
+      var retMsg = $("#returnMsg"); // 提示信息
+      retMsg.text("正在上传...");
+
+      var fileName = $("#fileName").val();
+      var pos = fileName.lastIndexOf("\\");
+      fileName = fileName.substr(pos + 1, fileName.length); // 截取出文件名 因为会带路径
+      lastFileName = fileName;
+      if ($.browser.msie) { // 兼容ie
+        window.fileForm.submit();
+      } else {
+        $("#fileForm").submit();
+      }
+
+    }
+
+    function uploadOnload () {
+      if (lastFileName == undefined) return; // 页面第一次出现的时候 也会执行这个方法
+      var body = $(window.frames['ajaxUpload'].document.body); // iframe中的body
+      var retMsg = $("#returnMsg");
+      retMsg.text(body.context.textContent); // 显示返回值
+      var img = $("#img");
+      img.empty();
+      img.append("< img style='width:100px; height=100px' src='../picture/accessory/" + lastFileName +
+        "' />") // 在 div中显示图片
+    }
+  </script>
+
+  <script>
+    function tableToExcel () {
+      //要导出的json数据
+      $(function () {
+        $("#form").load(function () {
+          var tempText = $(this);
+          var jsonData = tempText[0].contentDocument.body.textContent; //从后台传过来的数据
+          console.log(jsonData.data)
+          //列标题，逗号隔开，每一个逗号就是隔开一个单元格
+          let str = 'ID,Tweet,Tweet_senti_neg,Tweet_senti_pos\n';
+          //增加\t为了不让表格显示科学计数法或者其他格式
+          for (let i = 0; i < jsonData.length; i++) {
+            for (let item in jsonData[i]) {
+              str += `${jsonData[i][item] + '\t'},`;
+            }
+            str += '\n';
+          }
+          //encodeURIComponent解决中文乱码
+          let uri = 'data:text/csv;charset=utf-8,\ufeff' + encodeURIComponent(str);
+          //通过创建a标签实现
+          var link = document.createElement("a");
+          link.href = uri;
+          //对下载的文件命名
+          link.download = "json数据表.csv";
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+        })
+      })
+    }
+  </script>
+
+
+
+
+  <script>
+    function pageAjaxDone (json) {
+      YUNM.debug(json);
+      YUNM.ajaxDone(json);
+
+      if (json[YUNM.keys.statusCode] == YUNM.statusCode.ok) {
+        var msg = json[YUNM.keys.message];
+        // 弹出消息提示
+        YUNM.debug(msg);
+
+        if (YUNM.callbackType.confirmTimeoutForward == json.callbackType) {
+          $.showSuccessTimeout(msg, function () {
+            window.location = json.forwardUrl;
+          });
+        }
+      }
+    }
+  </script>
+
+
+  <script>
+    function editeight () {
+      $('.mydiv').css('height', '200px');
+    }
+  </script>
+
+
+  <style>
+    .col-md-2>div {
+      height: 4rem;
+    }
+  </style>
+</head>
+
+<body>
+  <header class="navbar navbar-inverse navbar-fixed-top bs-docs-nav" role="banner">
+    <div class="container">
+      <div class="navbar-header">
+        <button class="navbar-toggle" type="button" data-toggle="collapse" data-target=".bs-navbar-collapse">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="home.html">eventExtraction</a>
+      </div>
+      <nav class="collapse navbar-collapse bs-navbar-collapse" role="navigation">
+        <ul class="nav navbar-nav">
+          <li class="active"><a href="home.html">首页</a></li>
+          <li><a href=" topic.html">主题关系分析</a></li>
+          <li><a href="result.html">结果展示</a></li>
+          <li><a href="data.html">数据集</a></li>
+          <li><a href="copyright.html">使用说明</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+
+
+  <div class="container">
+
+    <h3>百度2020语言与智能技术竞赛 事件论元抽取</h3>
+    <br />
+    <p>
+      2020年，为了推动语言理解与交互技术发展, 中国中文信息学会 、 中国计算机学会 和 百度公司 联合举办“2020语言与智能技术竞赛”。 竞赛将提供面向真实应用场景的大规模数据集，
+      旨在为研究者提供学术交流平台，进一步提升语言理解与交互的研究水平，推动语言理解和人工智能领域技术和应用的发展。 本网站对该任务使用MRC的方式解决，并提供相应的验证接口。
+    </p>
+    <hr />
+
+    <!-- <%--隐藏值--%> -->
+    <input type="text" hidden id="info" name="info" value="${backinfo}">
+    <!-- <%--提示框--%> -->
+    <div class="alert alert-danger hide" id="alertMessage">
+      <a class="close" style="font-size:x-large" data-dismiss="alert">
+        &times;
+      </a>
+      <strong style="font-size: 15px">${backinfo}已得到结果文件！</strong>
+    </div>
+
+    <div class="row">
+      <!-- <div class="col-md-12"> -->
+      <div class="col-md-8"
+        style="height: 120px; margin-bottom: 1rem; margin-right: 1rem; box-shadow: 0 0.32rem 0.72rem 0 rgba(0,0,0,.132), 0 0.06rem 0.18rem 0 rgba(0,0,0,.108)">
+
+
+        <b>选择文件上传：</b> <br />
+        <form class="form-horizontal required-validate" action="http://localhost:8080/predict/get"
+          enctype="multipart/form-data" method="post" οnsubmit="return iframeCallback(this, pageAjaxDone)"
+          target="datatIframe" id="fileForm">
+
+          <div class="form-group">
+            <div class="col-md-10 tl th">
+              <input type="file" data-show-preview='false' class='file' name="file" id="file" showUpload='false' />
+
+            </div>
+          </div>
+
+        </form>
+        <iframe onload="uploadOnload()" name="datatIframe" id="datatIframe" style="display: none;"></iframe>
+        <br>
+        <div class="text-center">
+          请上传需要分析的文件（json）
+        </div>
+      </div>
+
+      <hr>
+
+      <div>
+        <a onclick="tableToExcel();" href="./out_all_show.json">点击下载结果文件</a>
+      </div>
+
+      <hr>
+    </div>
+
+    <hr>
+
+    <div class="row">
+      <h4 class="text-center">
+        数据分析图表
+      </h4>
+      <div class="col-md-6"
+        style="margin-bottom: 1rem; margin-right: 1rem; box-shadow: 0 0.32rem 0.72rem 0 rgba(0,0,0,.132), 0 0.06rem 0.18rem 0 rgba(0,0,0,.108)">
+        <img title="训练集词云图" src="images/词云1.png" class="img img-responsive img-thumbnail" />
+        <br>
+        <br>
+        <div class="text-center">
+          训练集词云图
+        </div>
+        <br>
+      </div>
+
+
+
+      <div class="col-md-6"
+        style="margin-bottom: 1rem; margin-right: 1rem; box-shadow: 0 0.32rem 0.72rem 0 rgba(0,0,0,.132), 0 0.06rem 0.18rem 0 rgba(0,0,0,.108)">
+        <img title="测试集词云图" src="images/词云2.png" class="img img-responsive img-thumbnail" />
+        <br>
+        <br>
+        <div class="text-center">
+          测试集词云图
+        </div>
+        <br>
+      </div>
+
+      <div class="col-md-6"
+        style="margin-bottom: 1rem; margin-right: 1rem; box-shadow: 0 0.32rem 0.72rem 0 rgba(0,0,0,.132), 0 0.06rem 0.18rem 0 rgba(0,0,0,.108)">
+        <img title="裁员事件论元抽取结果词云图" src="images/词云3.png" class="img img-responsive img-thumbnail" />
+        <br>
+        <br>
+        <div class="text-center">
+          裁员事件论元抽取结果词云图
+        </div>
+        <br>
+      </div>
+
+      <div class="col-md-6"
+        style="margin-bottom: 1rem; margin-right: 1rem; box-shadow: 0 0.32rem 0.72rem 0 rgba(0,0,0,.132), 0 0.06rem 0.18rem 0 rgba(0,0,0,.108)">
+        <img title="离婚事件论元抽取结果词云图" src="images/词云4.png" class="img img-responsive img-thumbnail" />
+        <br>
+        <br>
+        <div class="text-center">
+          离婚事件论元抽取结果词云图
+        </div>
+        <br>
+      </div>
+
+    </div>
+
+    <hr />
+    <div class="row">
+
+    </div>
+
+
+    <hr />
+
+    <div>
+      <h3>版权与免责声明</h3>
+      <p>
+        上述网页由本人毕业设计提供。本网站用于展示事件论元抽取工作获得的初步结果，向有兴趣的访问者提供参考，并非商业服务。在线可视系统用于展示相关可视化科研工作本身技术，使用者个人对于相关效果的理解，不代表实验室观点。
+      </p>
+
+      <p>
+        由于不可抗力，疏漏在所难免，可视化效果和数据有可能存在遗漏和偏差，提醒使用者注意到相关情况，避免造成错误理解。
+      </p>
+
+      <p>所有的联系请发邮件至：inolack@163.com</p>
+    </div>
+    <hr />
+
+    <div>
+      <h3>致谢</h3>
+      <p>
+        时光如白驹过隙，不知不觉中，四年的光阴已飞逝而去。大学本科的学习生涯也即将接近尾声。回首过往，哭过、笑过、努力过、失望过、有些许遗憾，但更多的是感激。感谢一路走来陪在我身边的老师、同学、朋友和家人。因为有你们的加油和鼓励，才让我充满信心和斗志，以一种乐观向上的心态去迎接困难和挑战。
+        在漫长的论文写作过程中，给过我最多关心和指导的莫过于我的导师曹阳副教授，曹老师学识渊博，治学严谨，待人亲切，每一种品质都令人钦佩并值得我用一生去学习，我将铭记于心。从最初的论文选题到撰写开题报告，再到数据选取与论文的撰写，直至最终的定稿，曹老师在每一个过程中都给予了悉心的指导并给出了实质性的建议。
+        在此，我要向曹老师致以深深的敬意和谢意!
+        四年的生活中，感谢我的同学、朋友一路相随，给了我难忘的友情，并温暖着我前进的路，分开在所难免，有缘再聚，真心的祝福你们。另外也要感谢我的家人一直以来对我的支持和帮助，是你们的爱让我更加的勇敢和坚定。
+        最后，要感谢在百忙之中对论文进行评审和指导的各位专家、老师。你们辛苦了!
+      </p>
+    </div>
+    <hr />
+
+    <div class="row text-center">
+      <p>
+        <a href="http://vis.pku.edu.cn/" target="_blank"><img src="images/logo.jpg" style="width: 100px" /></a>
+      </p>
+      <p><small>Copyright 2021-2022. All Rights Reserved.</small></p>
+    </div>
+
+  </div>
+</body>
+
+</html>
+
+<style>
+  .example-img {
+    /*border: 0.05rem solid #ed724c;*/
+    width: 100%;
+    height: 55rem;
+  }
+</style>

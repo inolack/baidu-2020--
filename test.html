@@ -1,0 +1,121 @@
+<html>
+<script type="text/javascript" src="js/jquery-3.4.1-1.js"></script>
+<style>
+  ul.IsignUp li {
+    margin-top: 5px;
+  }
+
+  input.inputLine {
+    width: 226px;
+    padding: .375rem .75rem;
+    border-radius: .25rem;
+    border: 1px solid #ced4da;
+  }
+
+  input.inputLine:focus {
+    border-style: solid;
+    border-color: #03a9f4;
+    box-shadow: 0 0 5px #03a9f4;
+  }
+
+  input.inputLeft {
+    width: 130px;
+  }
+
+  button,
+  select {
+    padding: .375rem .75rem;
+    border-radius: .25rem;
+    border: 1px solid #ced4da;
+  }
+
+  button:hover,
+  select:hover {
+    border-color: #03a9f4;
+  }
+
+  button:active {
+    background: #03a9f4;
+  }
+</style>
+
+<body>
+  <ul class="IsignUp" style="padding:0px">
+
+    <li>
+      <input class="inputLeft inputLine" type="text" id="code" placeholder="请输入事件句id">
+      <input type="hidden" id="right_code" placeholder="请输入事件句id">
+      <button id="btn" class="i-code-btn" onclick="getCode(this)">
+        查询
+      </button>
+    </li>
+  </ul>
+</body>
+<script>
+  //获取手机验证码
+  function getCode (obj) {
+    var mobile = $('#mobile').val();
+    if (mobile == '') {
+      alert('手机号不能为空！');
+      return;
+    }
+    obj.setAttribute("disabled", true);
+    obj.style.backgroundColor = '#646464';
+    $.ajax({
+      url: '/index/index/getcode',
+      type: 'post',
+      dataType: 'json',
+      data: { mobile: mobile },
+      success: function (data) {
+        if (data.code == 1) {
+          //obj.style.backgroundColor='#ED2525';
+          //obj.removeAttribute("disabled");
+          $('#right_code').val(data.data.code);
+        } else {
+          alert(data.msg);
+        }
+      },
+      error: function () {
+        alert('服务器异常！');
+      }
+    });
+  }
+
+  //添加学生报名数据
+  function addOneToOne () {
+    var mobile = $.trim($('#mobile').val());
+    var code = $.trim($('#code').val());
+    var name = $.trim($('#name').val());
+    var hobby = $.trim($('#hobby').val());
+    var right_code = $.trim($('#right_code').val());
+
+    if (mobile == '') { alert('手机号不能为空！'); return; }
+    if (code == '') { alert('id不能为空！'); return; }
+    if (name == '') { alert('姓名不能为空！'); return; }
+    if (hobby == '') { alert('爱好不能为空！'); return; }
+    if (right_code == '') { alert('请发送验证码！'); return; }
+
+    $.ajax({
+      url: '/index/index/addone',
+      type: 'post',
+      dataType: 'json',
+      data: { mobile: mobile, code: code, name: name, hobby: hobby, right_code: right_code, type: 2, remark: $('#remark').val() },
+      success: function (data) {
+        if (data.code == 1) {	//操作成功的话，表单信息清空
+          $('#mobile').val('');
+          $('#code').val('');
+          $('#name').val('');
+          $('#hobby').val('');
+          $('#right_code').val('');
+          $('#remark').val('');
+        }
+        alert(data.msg);
+      },
+      error: function () {
+        alert('服务器异常！');
+      }
+    });
+  }
+</script>
+
+</html>
